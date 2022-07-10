@@ -2,17 +2,17 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyAuthToken = exports.verifyUserId = void 0;
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1["default"].config();
-var verifyUserId = function (req, res, next) {
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const verifyUserId = (req, res, next) => {
     try {
-        var authorizationHeader = req.headers.authorization;
-        var token = authorizationHeader.split(' ')[1];
-        var decoded = jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET);
-        var id = decoded.user.id;
+        const authorizationHeader = req.headers.authorization;
+        const token = authorizationHeader.split(' ')[1];
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.TOKEN_SECRET);
+        const id = decoded.user.id;
         if (id !== parseInt(req.params.id)) {
             throw new Error("User id does not match!");
         }
@@ -25,11 +25,11 @@ var verifyUserId = function (req, res, next) {
     }
 };
 exports.verifyUserId = verifyUserId;
-var verifyAuthToken = function (req, res, next) {
+const verifyAuthToken = (req, res, next) => {
     try {
-        var authorizationHeader = req.headers.authorization;
-        var token = authorizationHeader.split(' ')[1];
-        jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET);
+        const authorizationHeader = req.headers.authorization;
+        const token = authorizationHeader.split(' ')[1];
+        jsonwebtoken_1.default.verify(token, process.env.TOKEN_SECRET);
         next();
     }
     catch (error) {

@@ -1,12 +1,37 @@
 import { OrderStore } from "../models/order"; 
 import supertest from "supertest";
 import app from "../server";
+import dotenv from "dotenv";
+import { ProductStore } from "../models/product";
+import { UserStore } from "../models/user";
+
+dotenv.config();
+
+const { POSTGRES_PASSWORD_TEST } = process.env;
 
 const store = new OrderStore();
+
+const productStore = new ProductStore();
+
+const userStore = new UserStore();
 
 const request = supertest(app);
 
 describe("OrderModel", () => {
+
+    beforeAll(async () => {
+        await userStore.create({
+          username: "vantien",
+          password: POSTGRES_PASSWORD_TEST as string,
+        });
+    
+        await productStore.create({
+          name: "Máy ảnh",
+          price: 200.00,
+          category: "Đồ điện tử",
+        });
+      });
+
     it("method index have to defined", () => {
         expect(store.index).toBeDefined();
     });

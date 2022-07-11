@@ -6,8 +6,8 @@
   "scripts": {
     "start": "npm run build && nodemon build/server.js",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./build --onSuccess \"node ./build/server.js\"",
-    "test": "db-migrate --env test up && npm run jasmine && db-migrate --env test reset",
     "jasmine": "jasmine",
+    "test": "set ENV=test && npx tsc && db-migrate up --env test && jasmine && db-migrate reset --env test",
     "build": "npx tsc"
   },
   "repository": {
@@ -22,11 +22,13 @@
   "homepage": "https://github.com/MoneyDevlp/Project_API_with_Postgres_Express#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
     "db-migrate": "^0.11.13",
     "db-migrate-pg": "^1.2.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "jasmine-spec-reporter": "^7.0.0",
+    "jasmine": "^4.2.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
     "supertest": "^6.2.4"
@@ -34,14 +36,14 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
-    "@types/jasmine": "^3.6.3",
+    "@types/jasmine": "^4.0.3",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^18.0.3",
     "@types/pg": "^8.6.5",
     "@types/supertest": "^2.0.12",
-    "jasmine-ts": "^0.4.0",
-    "nodemon": "^2.0.16",
-    "ts-node": "^10.8.1",
+    "jasmine-spec-reporter": "^7.0.0",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.8.2",
     "tsc-watch": "^5.0.3",
     "typescript": "^4.7.4"
   }

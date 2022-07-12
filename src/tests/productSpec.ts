@@ -27,7 +27,6 @@ describe("ProductModel", () => {
             })
             .set("Accept", "application/json");
             token = "Bearer " + response.body;
-            console.log("new",token);
       });
 
     it("method index have to defined", () => {
@@ -55,7 +54,7 @@ describe("ProductModel", () => {
         it("test end point create a new product", async () => {
             const response = await request.post("/products")
             .send({
-                name: "Dienthoai",
+                name: "Tivi",
                 price: 100.00,
                 category: "Dodientu"
             })
@@ -77,7 +76,7 @@ describe("ProductModel", () => {
         });
 
         it("test end point update product", async () => {
-            const response = await request.put("/product/1")
+            const response = await request.put("/products/1")
             
             .send({
                 name: "Maytinh",
@@ -90,9 +89,24 @@ describe("ProductModel", () => {
         });
 
         it("test delete product by id", async () => {
-            const response = await request.delete("/product/1")
+            const response = await request.delete("/products/1")
             .set("Authorization", token)
             .set("Accept", "application/json");
+            expect(response.status).toEqual(200);
+        });
+
+        it("test get top Five Products Best Selling", async () => {
+            const response = await request.get("/topFiveProductsBestSelling")
+            expect(response.status).toEqual(200);
+        });
+
+        it("test get top five Product Most Expensive", async () => {
+            const response = await request.get("/topfiveProductMostExpensive")
+            expect(response.status).toEqual(200);
+        });
+
+        it("test get products By Category", async () => {
+            const response = await request.get("/productsByCategory/Dodientu")
             expect(response.status).toEqual(200);
         });
     });

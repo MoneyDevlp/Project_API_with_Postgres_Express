@@ -15,6 +15,7 @@ export const verifyUserId = (req: Request, res: Response, next: express.NextFunc
     const token = (authorizationHeader as string).split(' ')[1];
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET as jwt.Secret);
     const id = (decoded as TokenUser).user.id;
+    console.log("idveri",id);
     if (id !== parseInt(req.params.id)) {
       throw new Error("User id does not match!");
     }

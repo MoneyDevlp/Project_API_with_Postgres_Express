@@ -2,6 +2,7 @@ import { UserStore } from "../models/user";
 import supertest from "supertest";
 import app from "../server";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const request = supertest(app);
 
 describe("UserModel", () => {
     let token: string;
+    let userId: string;
 
     beforeAll(async () => {
         const response = await request.post("/users")
@@ -22,7 +24,8 @@ describe("UserModel", () => {
             })
             .set("Accept", "application/json");
             token = "Bearer " + response.body;
-            console.log("new",token);
+            userId = JSON.parse(JSON.stringify(jwt.decode(response.body))).user.id;
+            console.log("init",token);
       });
 
     it("method index have to defined", () => {
@@ -71,6 +74,24 @@ describe("UserModel", () => {
             })
             .set("Accept", "application/json");
             console.log("create",token);
+            expect(response.status).toEqual(200);
+        });
+
+        it("test end point update user", async () => {
+            const response = await request.put("/users/" + userId)
+            .send({
+                username: "vantiena",
+                password: PASSWORD_TEST as string,
+            })
+            .set("Authorization", token)
+            .set("Accept", "application/json");
+            console.log("update",token);
+            expect(response.status).toEqual(200);
+        });
+
+        it("test end point delete user", async () => {
+            const response = await request.delete("/users/" + userId)
+            .set("Authorization", token);
             expect(response.status).toEqual(200);
         });
 

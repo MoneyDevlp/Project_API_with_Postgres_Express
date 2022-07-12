@@ -70,8 +70,8 @@ const productRouter = (app: express.Application): void => {
     app.get("/products", index);
     app.get("/product/:id", show);
     app.post("/products", verifyAuthToken, create);
-    app.put("/product/:id", verifyAuthToken, update);
-    app.delete("/product/:id", verifyAuthToken, deleteProduct);
+    app.put("/products/:id", verifyAuthToken, update);
+    app.delete("/products/:id", verifyAuthToken, deleteProduct);
 }
 
 export default productRouter;

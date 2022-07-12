@@ -105,8 +105,8 @@ const userRouter = (app: express.Application): void => {
     app.get("/users", verifyAuthToken, index);
     app.get("/user/:id", verifyAuthToken, show);
     app.post("/users", create);
-    app.put("/user/:id", verifyUserId, update);
-    app.delete("/user/:id", verifyUserId, deleteUser);
+    app.put("/users/:id", verifyUserId, update);
+    app.delete("/users/:id", verifyUserId, deleteUser);
     app.post("/user/authenticate",authenticate);
 }
 

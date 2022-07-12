@@ -76,7 +76,7 @@ const getAllOrderProduct = async(_req: Request, res: Response): Promise<void> =>
     }
 }
 
-const orderProduct = async (req: Request, res: Response): Promise<void> => {
+const orderProducts = async (req: Request, res: Response): Promise<void> => {
     const orderProduct: OrderProduct = {
         quantity: req.body.quantity,
         order_id: req.params.id,
@@ -88,6 +88,7 @@ const orderProduct = async (req: Request, res: Response): Promise<void> => {
     } catch (error) {
         res.status(400);
         res.json(error);
+        console.log(error);
     }
 }
 
@@ -95,10 +96,10 @@ const orderRouter = (app: express.Application) => {
     app.get("/orders", index);
     app.get("/order/:id", show);
     app.post("/orders", create);
-    app.put("/order/:id", update);
-    app.delete("/order/:id", deleteOrder);
+    app.put("/orders/:id", update);
+    app.delete("/orders/:id", deleteOrder);
     app.get("/orderProducts", getAllOrderProduct);
-    app.post("/order/:id/product",orderProduct);
+    app.post("/orders/:id/products",orderProducts);
 }
 
 export default orderRouter;

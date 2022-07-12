@@ -26,7 +26,7 @@ Get started:
   
   - create file .env and config:
   
-     - POSTGRES_HOST=127.0.0.1
+     - POSTGRES_HOST=localhost
      - POSTGRES_DB=shopping
      - POSTGRES_USER=shopping_user
      - POSTGRES_PASSWORD=password123

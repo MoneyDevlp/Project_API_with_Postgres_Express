@@ -3,11 +3,11 @@ import supertest from "supertest";
 import app from "../server";
 import dotenv from "dotenv";
 import { ProductStore } from "../models/product";
-import { UserStore } from "../models/user";
+import { User, UserStore } from "../models/user";
 
 dotenv.config();
 
-const { POSTGRES_PASSWORD_TEST } = process.env;
+const { PASSWORD_TEST } = process.env;
 
 const store = new OrderStore();
 
@@ -17,19 +17,35 @@ const userStore = new UserStore();
 
 const request = supertest(app);
 
-describe("OrderModel", () => {
+const user: User = {
+    username: "levantien",
+    password: PASSWORD_TEST as string,
+}
 
+describe("OrderModel", () => {
+    let userId: string;
     beforeAll(async () => {
-        await userStore.create({
-          username: "vantien",
-          password: POSTGRES_PASSWORD_TEST as string,
-        });
+        await request.post("/users")
+            .send({
+                username: "levantien",
+                password: PASSWORD_TEST as string,
+        })
+        .set("Accept", "application/json");
+
+        await request.post("/users")
+            .send({
+                username: "vantien",
+                password: PASSWORD_TEST as string,
+        })
+        .set("Accept", "application/json");
     
-        await productStore.create({
-          name: "Máy ảnh",
-          price: 200.00,
-          category: "Đồ điện tử",
-        });
+        await request.post("/products")
+            .send({
+                name: "Dienthoai",
+                price: 100.00,
+                category: "Dodientu"
+            })
+            .set("Accept", "application/json")
       });
 
     it("method index have to defined", () => {
@@ -65,18 +81,18 @@ describe("OrderModel", () => {
             const response = await request.post("/orders")
             .send({
                 address: "Quảng Nam",
-                user_id: 1,
+                user_id: 2,
             })
             .set("Accept", "application/json");
             expect(response.status).toEqual(200);
         });
 
         it("test end point update order", async () => {
-            const response = await request.put("/product/2")
+            const response = await request.put("/order/1")
             .send({
                 status: "active",
                 address: "Đà Nẵng",
-                user_id: 1,
+                user_id: 2,
             })
             .set("Accept", "application/json");
             expect(response.status).toEqual(200);
@@ -89,30 +105,23 @@ describe("OrderModel", () => {
 
         it("test get order by id", async () => {
             const response = await request.get("/order/1")
-            expect(response.status).toHaveBeenCalledWith('1');
             expect(response.status).toEqual(200);
         });
 
         it("test delete order by id", async () => {
             const response = await request.delete("/order/1")
             .set("Accept", "application/json");
-            expect(response.status).toHaveBeenCalledWith('1');
             expect(response.status).toEqual(200);
         });
 
-        it("test get all order product", async () => {
-            const response = await request.get("/orderProducts")
-            expect(response.status).toEqual(200);
-        });
-
-        it("test end point create a new order product", async () => {
-            const response = await request.post("/order/2/product")
-            .send({
-                quantity: 20,
-                product_id: "1",
-            })
-            .set("Accept", "application/json");
-            expect(response.status).toEqual(200);
-        });
+        // it("test end point create a new order product", async () => {
+        //     const response = await request.post("/order/1/product")
+        //     .send({
+        //         quantity: 20,
+        //         product_id: "1",
+        //     })
+        //     .set("Accept", "application/json");
+        //     expect(response.status).toEqual(200);
+        // });
     });
 });

@@ -7,7 +7,7 @@
     "start": "npm run build && nodemon build/server.js",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./build --onSuccess \"node ./build/server.js\"",
     "jasmine": "jasmine",
-    "test": "set ENV=test && npx tsc && db-migrate up --env test && jasmine && db-migrate reset --env test",
+    "test": "set cross-env-shel ENV=test && npx tsc && db-migrate up --env test && jasmine && db-migrate reset --env test",
     "build": "npx tsc"
   },
   "repository": {
@@ -41,6 +41,7 @@
     "@types/node": "^18.0.3",
     "@types/pg": "^8.6.5",
     "@types/supertest": "^2.0.12",
+    "cross-env": "^7.0.3",
     "jasmine-spec-reporter": "^7.0.0",
     "nodemon": "^2.0.19",
     "ts-node": "^10.8.2",

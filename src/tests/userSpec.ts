@@ -12,6 +12,19 @@ const store = new UserStore();
 const request = supertest(app);
 
 describe("UserModel", () => {
+    let token: string;
+
+    beforeAll(async () => {
+        const response = await request.post("/users")
+            .send({
+                username: "levantien",
+                password: PASSWORD_TEST as string,
+            })
+            .set("Accept", "application/json");
+            token = "Bearer " + response.body;
+            console.log("new",token);
+      });
+
     it("method index have to defined", () => {
         expect(store.index).toBeDefined();
     });
@@ -37,53 +50,33 @@ describe("UserModel", () => {
     });
 
     describe("UserStore", () => {
-        let token: string;
+
+        it("test get all users", async () => {
+            const response = await request.get("/users")
+            .set("Authorization", token);
+            expect(response.status).toEqual(200);
+        });
+
+        it("test get user by id", async () => {
+            const response = await request.get("/user/1")
+            .set("Authorization", token);
+            expect(response.status).toEqual(200);
+        });
+
         it("test end point create a new user", async () => {
             const response = await request.post("/users")
             .send({
                 username: "levantien",
                 password: PASSWORD_TEST as string,
             })
-            .set("Accept", "application/json")
-            token = "Bearer " + response.body;
-            expect(response.status).toEqual(200);
-        });
-
-        it("test get all users", async () => {
-            const response = await request.get("/users")
-            .set("authorization", token);
-            expect(response.status).toEqual(200);
-        });
-
-        it("test get user by id", async () => {
-            const response = await request.get("/user/1")
-            .set("authorization", token);
-            expect(response.status).toHaveBeenCalledWith('1');
-            expect(response.status).toEqual(200);
-        });
-
-        it("test end point update user", async () => {
-            const response = await request.put("/user/1")
-            .set("authorization", token)
-            .send({
-                username: "vantien",
-                password: PASSWORD_TEST as string
-            })
             .set("Accept", "application/json");
-            expect(response.status).toEqual(200);
-        });
-
-        it("test delete user by id", async () => {
-            const response = await request.delete("/user/1")
-            .set("authorization", token)
-            .set("Accept", "application/json");
-            expect(response.status).toHaveBeenCalledWith('1');
+            console.log("create",token);
             expect(response.status).toEqual(200);
         });
 
         it("test authenticate user", async () => {
             const response = await request.post("/user/authenticate")
-            .set("authorization", token)
+            .set("Authorization", token)
             .send({
                 username: "levantien",
                 password: PASSWORD_TEST as string

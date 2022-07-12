@@ -26,16 +26,16 @@ Get started:
   
   - create file .env and config:
   
-      POSTGRES_HOST=127.0.0.1
-      POSTGRES_DB=shopping
-      POSTGRES_USER=shopping_user
-      POSTGRES_PASSWORD=password123
-      POSTGRES_DB_TEST=shopping_test
-      ENV=test
-      PEPPER=shopping-store
-      SALT_ROUNDS=10
-      TOKEN_SECRET=secret-token
-      PASSWORD_TEST=test
+     - POSTGRES_HOST=127.0.0.1
+     - POSTGRES_DB=shopping
+     - POSTGRES_USER=shopping_user
+     - POSTGRES_PASSWORD=password123
+     - POSTGRES_DB_TEST=shopping_test
+     - ENV=test
+     - PEPPER=shopping-store
+     - SALT_ROUNDS=10
+     - TOKEN_SECRET=secret-token
+     - PASSWORD_TEST=test
 
   In terminal
 

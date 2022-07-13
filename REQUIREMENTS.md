@@ -36,10 +36,10 @@ These are the descriptions that describe what endpoints the API needs to supply,
 | ------ | -------------------------- | ----------------------------------------------------------------------- | ------------- | 
 | GET    | /orders                    | Index                                                                   | none          |                                  
 | GET    | /order/:id                 | Show                                                                    | id - [number] |                                  
-| POST   | /orders                    | Create                                                                  | none          |             
-| PUT    | /orders/:id                | Update                                                                  | id - [number] | 
-| DELETE | /orders/:id                | DeleteOrder                                                             | id - [number] |                                
-| POST   | /orders/:id/products       | OrderProducts                                                           | id - [number] |                                   
+| POST   | /orders                    | Create [verifyAuthToken]                                                | none          |             
+| PUT    | /orders/:id                | Update [verifyAuthToken]                                                | id - [number] | 
+| DELETE | /orders/:id                | DeleteOrder [verifyAuthToken]                                           | id - [number] |                                
+| POST   | /orders/:id/products       | OrderProducts [verifyAuthToken]                                         | id - [number] |                                   
 
 ## Data Shapes and Schema
 

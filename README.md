@@ -16,13 +16,13 @@ Get started:
   
   - Create 2 databases in your postgres SQL Shell, 1 for development, 1 for testing
       
-              Create database dev:     CREATE DATABASE shopping;
+          Create database dev:     CREATE DATABASE shopping;
 
-              Connect database dev:     `\c shopping GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
+          Connect database dev:    `\c shopping GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
         
-              Create database test:    CREATE DATABASE shopping_test;
+          Create database test:    CREATE DATABASE shopping_test;
 
-              Connect database test:     `\c shopping_test GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
+          Connect database test:   `\c shopping_test GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
                         
   - To test that it is working run `\dt` and it should output "No relations found."
   

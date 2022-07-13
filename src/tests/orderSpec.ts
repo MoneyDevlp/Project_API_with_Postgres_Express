@@ -1,4 +1,4 @@
-import { OrderStore } from "../models/order"; 
+import { Order, OrderProduct, OrderStore } from "../models/order"; 
 import supertest from "supertest";
 import app from "../server";
 import dotenv from "dotenv";
@@ -23,23 +23,23 @@ const user: User = {
 }
 
 describe("OrderModel", () => {
-    let userId: string;
     let token: string;
     beforeAll(async () => {
+
+        const response = await request.post("/users")
+            .send({
+                username: "levantien",
+                password: PASSWORD_TEST as string,
+        })
+        .set("Accept", "application/json");
+        token = "Bearer " + response.body;
+
         await request.post("/users")
             .send({
                 username: "levantien",
                 password: PASSWORD_TEST as string,
         })
         .set("Accept", "application/json");
-
-        const response = await request.post("/users")
-            .send({
-                username: "levantien",
-                password: PASSWORD_TEST as string,
-            })
-            .set("Accept", "application/json");
-            token = "Bearer " + response.body;
 
         await request.post("/users")
             .send({
@@ -82,6 +82,22 @@ describe("OrderModel", () => {
                 address: "Quảng Bình",
                 user_id: 3,
         })
+
+        await request.post("/orders")
+            .send({
+                address: "Hà Nội",
+                user_id: 3,
+        })
+        .set("Accept", "application/json")
+        .set("Authorization", token)
+
+        await request.post("/orders")
+            .send({
+                address: "Hồ Chí Minh",
+                user_id: 3,
+        })
+        .set("Accept", "application/json")
+        .set("Authorization", token)
       });
 
     it("method index have to defined", () => {
@@ -114,23 +130,27 @@ describe("OrderModel", () => {
 
     describe("OrderStore", () => {
         it("test end point create a new order", async () => {
-            const response = await request.post("/orders")
-            .send({
+            const order: Order = {
                 address: "Huế",
-                user_id: 3,
-            })
-            .set("Accept", "application/json");
+                user_id: String(3),
+            }
+            const response = await request.post("/orders")
+            .send(order)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
             expect(response.status).toEqual(200);
         });
 
         it("test end point update order", async () => {
-            const response = await request.put("/orders/1")
-            .send({
+            const order: Order = {
                 status: "active",
                 address: "Đà Nẵng",
-                user_id: 3,
-            })
-            .set("Accept", "application/json");
+                user_id: String(3),
+            }
+            const response = await request.put("/orders/1")
+            .send(order)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
             expect(response.status).toEqual(200);
         });
 
@@ -146,17 +166,21 @@ describe("OrderModel", () => {
 
         it("test delete order by id", async () => {
             const response = await request.delete("/orders/1")
-            .set("Accept", "application/json");
+            .set("Accept", "application/json")
+            .set("Authorization", token)
             expect(response.status).toEqual(200);
         });
 
         it("test end point create a new order product", async () => {
+            const orderProduct: OrderProduct = {
+                quantity: 50,
+                order_id: String(2),
+                product_id: String(2),
+            }
             const response = await request.post("/orders/2/products")
-            .send({
-                quantity: 20,
-                product_id: 2,
-            })
-            .set("Accept", "application/json");
+            .send(orderProduct)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
             expect(response.status).toEqual(200);
         });
     });

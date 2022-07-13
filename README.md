@@ -1,6 +1,10 @@
 ## Getting Started
 
-- Get project, run `git clone https://github.com/MoneyDevlp/Project_API_with_Postgres_Express.git` in your terminal or git bash. This project is running on port 3000.
+- Get project, run `git clone https://github.com/MoneyDevlp/Project_API_with_Postgres_Express.git` in your terminal or git bash.
+
+- This project is running on port 3000, example: localhost:3000/users
+
+- Database are running on port 5432
 
 Get started:
 
@@ -12,16 +16,14 @@ Get started:
   
   - Create 2 databases in your postgres SQL Shell, 1 for development, 1 for testing
       
-              Database dev:     CREATE DATABASE shopping;
+              Create database dev:     CREATE DATABASE shopping;
+
+              Connect database dev:     `\c shopping GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
         
-              Database test:    CREATE DATABASE shopping_test;
-              
-  - Connect database use command in SQL Shell:
-  
-              Database dev:     `\c shopping GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
- 
-              Database test:     `\c shopping_test GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
-  
+              Create database test:    CREATE DATABASE shopping_test;
+
+              Connect database test:     `\c shopping_test GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user;`
+                        
   - To test that it is working run `\dt` and it should output "No relations found."
   
   - create file .env and config:
@@ -39,9 +41,14 @@ Get started:
 
   In terminal
 
-  - `npm install`
+  - run `npm install`
+
   - For Development Environment
+
     - Manually change `ENV=dev` in .env file
+
     - Run `npm run watch` each time when there are changes in codes
+
   - For Test Environment
+
     - Run `npm run test` to test

@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express";
 import { Order, OrderStore, OrderProduct } from "../models/order";
+import {verifyAuthToken} from "../services/verifyJWT"
 
 const store = new OrderStore();
 
@@ -95,12 +96,11 @@ const orderProducts = async (req: Request, res: Response): Promise<void> => {
 const orderRouter = (app: express.Application) => {
     app.get("/orders", index);
     app.get("/order/:id", show);
-    app.post("/orders", create);
-    app.put("/orders/:id", update);
-    app.delete("/orders/:id", deleteOrder);
+    app.post("/orders", verifyAuthToken, create);
+    app.put("/orders/:id", verifyAuthToken, update);
+    app.delete("/orders/:id", verifyAuthToken, deleteOrder);
     app.get("/orderProducts", getAllOrderProduct);
-    app.post("/orders/:id/products",orderProducts);
+    app.post("/orders/:id/products", verifyAuthToken,orderProducts);
 }
 
 export default orderRouter;
-

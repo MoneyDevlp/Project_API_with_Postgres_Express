@@ -1,4 +1,4 @@
-import { UserStore } from "../models/user";
+import { User, UserStore } from "../models/user";
 import supertest from "supertest";
 import app from "../server";
 import dotenv from "dotenv";
@@ -67,22 +67,24 @@ describe("UserModel", () => {
         });
 
         it("test end point create a new user", async () => {
-            const response = await request.post("/users")
-            .send({
+            const user: User = {
                 username: "levantien",
                 password: PASSWORD_TEST as string,
-            })
+            }
+            const response = await request.post("/users")
+            .send(user)
             .set("Accept", "application/json");
             console.log("create",token);
             expect(response.status).toEqual(200);
         });
 
         it("test end point update user", async () => {
-            const response = await request.put("/users/" + userId)
-            .send({
+            const user: User = {
                 username: "vantiena",
                 password: PASSWORD_TEST as string,
-            })
+            }
+            const response = await request.put("/users/" + userId)
+            .send(user)
             .set("Authorization", token)
             .set("Accept", "application/json");
             console.log("update",token);
@@ -96,12 +98,13 @@ describe("UserModel", () => {
         });
 
         it("test authenticate user", async () => {
+            const user: User = {
+                username: "levantien",
+                password: PASSWORD_TEST as string,
+            }
             const response = await request.post("/user/authenticate")
             .set("Authorization", token)
-            .send({
-                username: "levantien",
-                password: PASSWORD_TEST as string
-            })
+            .send(user)
             .set("Accept", "application/json");
             expect(response.status).toEqual(200);
         });

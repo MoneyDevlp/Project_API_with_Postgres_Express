@@ -1,4 +1,4 @@
-import { ProductStore } from "../models/product";
+import { Product, ProductStore } from "../models/product";
 import supertest from "supertest";
 import app from "../server";
 import dotenv from "dotenv";
@@ -52,12 +52,13 @@ describe("ProductModel", () => {
     describe("ProductStore", () => {
 
         it("test end point create a new product", async () => {
-            const response = await request.post("/products")
-            .send({
+            const product: Product = {
                 name: "Tivi",
                 price: 100.00,
                 category: "Dodientu"
-            })
+            }
+            const response = await request.post("/products")
+            .send(product)
             .set("Accept", "application/json")
             .set("Authorization", token)
             expect(response.status).toEqual(200);
@@ -76,13 +77,13 @@ describe("ProductModel", () => {
         });
 
         it("test end point update product", async () => {
-            const response = await request.put("/products/1")
-            
-            .send({
+            const product: Product = {
                 name: "Maytinh",
                 price: 200.00,
                 category: "Dodientu"
-            })
+            }
+            const response = await request.put("/products/1") 
+            .send(product)
             .set("Accept", "application/json")
             .set("Authorization", token)
             expect(response.status).toEqual(200);

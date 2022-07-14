@@ -2,18 +2,14 @@ import { Order, OrderProduct, OrderStore } from "../models/order";
 import supertest from "supertest";
 import app from "../server";
 import dotenv from "dotenv";
-import { ProductStore } from "../models/product";
-import { User, UserStore } from "../models/user";
+import { User } from "../models/user";
+import { Product } from "../models/product";
 
 dotenv.config();
 
 const { PASSWORD_TEST } = process.env;
 
 const store = new OrderStore();
-
-const productStore = new ProductStore();
-
-const userStore = new UserStore();
 
 const request = supertest(app);
 
@@ -24,81 +20,70 @@ const user: User = {
 
 describe("OrderModel", () => {
     let token: string;
-    beforeAll(async () => {
 
+    const product: Product = {
+        name: "Máy in",
+        price: 900.00,
+        category: "Đồ điện tử"
+    }
+
+    const order: Order = {
+        address: "Điện Bàn",
+        user_id: String(3),
+    }
+
+    beforeAll(async () => {
+        const user: User = {
+            username: "levantien",
+            password: PASSWORD_TEST as string,
+        }
         const response = await request.post("/users")
-            .send({
-                username: "levantien",
-                password: PASSWORD_TEST as string,
-        })
+        .send(user)
         .set("Accept", "application/json");
         token = "Bearer " + response.body;
 
         await request.post("/users")
-            .send({
-                username: "levantien",
-                password: PASSWORD_TEST as string,
-        })
-        .set("Accept", "application/json");
+            .send(user)
+            .set("Accept", "application/json");
 
         await request.post("/users")
-            .send({
-                username: "vantienb",
-                password: PASSWORD_TEST as string,
-        })
-        .set("Accept", "application/json");
+            .send(user)
+            .set("Accept", "application/json");
 
         await request.post("/users")
-            .send({
-                username: "vantienc",
-                password: PASSWORD_TEST as string,
-        })
-        .set("Accept", "application/json");
+            .send(user)
+            .set("Accept", "application/json");
     
         await request.post("/products")
-            .send({
-                name: "Dienthoai",
-                price: 100.00,
-                category: "Dodientu"
-        })
-        .set("Authorization", token);
+            .send(product)
+            .set("Authorization", token);
 
         await request.post("/products")
-            .send({
-                name: "Tulanh",
-                price: 120.00,
-                category: "Dodientu"
-        })
-        .set("Authorization", token);
+            .send(product)
+            .set("Authorization", token);
 
         await request.post("/orders")
             .send({
                 address: "Quảng Nam",
                 user_id: 3,
-        })
+            })
 
         await request.post("/orders")
             .send({
                 address: "Quảng Bình",
                 user_id: 3,
-        })
+            })
 
         await request.post("/orders")
-            .send({
-                address: "Hà Nội",
-                user_id: 3,
-        })
-        .set("Accept", "application/json")
-        .set("Authorization", token)
+            .send(order)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
 
         await request.post("/orders")
-            .send({
-                address: "Hồ Chí Minh",
-                user_id: 3,
-        })
-        .set("Accept", "application/json")
-        .set("Authorization", token)
-      });
+            .send(order)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
+        });
 
     it("method index have to defined", () => {
         expect(store.index).toBeDefined();

@@ -17,15 +17,15 @@ describe("UserModel", () => {
     let userId: string;
 
     beforeAll(async () => {
+        const user: User = {
+            username: "levantien",
+            password: PASSWORD_TEST as string,
+        }
         const response = await request.post("/users")
-            .send({
-                username: "levantien",
-                password: PASSWORD_TEST as string,
-            })
+            .send(user)
             .set("Accept", "application/json");
             token = "Bearer " + response.body;
             userId = JSON.parse(JSON.stringify(jwt.decode(response.body))).user.id;
-            console.log("init",token);
       });
 
     it("method index have to defined", () => {
@@ -74,7 +74,6 @@ describe("UserModel", () => {
             const response = await request.post("/users")
             .send(user)
             .set("Accept", "application/json");
-            console.log("create",token);
             expect(response.status).toEqual(200);
         });
 
@@ -87,7 +86,6 @@ describe("UserModel", () => {
             .send(user)
             .set("Authorization", token)
             .set("Accept", "application/json");
-            console.log("update",token);
             expect(response.status).toEqual(200);
         });
 

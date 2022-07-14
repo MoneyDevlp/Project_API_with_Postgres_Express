@@ -20,11 +20,12 @@ describe("ProductModel", () => {
     let token: string;
 
     beforeAll(async () => {
+        const user: User = {
+            username: "levantien",
+            password: PASSWORD_TEST as string,
+        }
         const response = await request.post("/users")
-            .send({
-                username: "levantien",
-                password: PASSWORD_TEST as string,
-            })
+            .send(user)
             .set("Accept", "application/json");
             token = "Bearer " + response.body;
       });
@@ -50,7 +51,6 @@ describe("ProductModel", () => {
     });
 
     describe("ProductStore", () => {
-
         it("test end point create a new product", async () => {
             const product: Product = {
                 name: "Tivi",
@@ -66,13 +66,11 @@ describe("ProductModel", () => {
 
         it("test get all products", async () => {
             const response = await request.get("/products")
-            .set("Authorization", token);
             expect(response.status).toEqual(200);
         });
 
         it("test get product by id", async () => {
             const response = await request.get("/product/1")
-            .set("Authorization", token);
             expect(response.status).toEqual(200);
         });
 

@@ -30,27 +30,6 @@ describe("ProductModel", () => {
             token = "Bearer " + response.body;
       });
 
-    it("method index have to defined", () => {
-        expect(store.index).toBeDefined();
-    });
-
-    it("method show have to defined", () => {
-        expect(store.show).toBeDefined();
-    });
-
-    it("method create have to defined", () => {
-        expect(store.create).toBeDefined();
-    });
-
-    it("method update have to defined", () => {
-        expect(store.update).toBeDefined();
-    });
-
-    it("method delete have to defined", () => {
-        expect(store.delete).toBeDefined();
-    });
-
-    describe("ProductStore", () => {
         it("test end point create a new product", async () => {
             const product: Product = {
                 name: "Tivi",
@@ -65,6 +44,15 @@ describe("ProductModel", () => {
         });
 
         it("test get all products", async () => {
+            const product: Product = {
+                name: "Lò vi sóng",
+                price: 120.00,
+                category: "Dodientu"
+            }
+            await request.post("/products")
+            .send(product)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
             const response = await request.get("/products")
             expect(response.status).toEqual(200);
         });
@@ -108,5 +96,4 @@ describe("ProductModel", () => {
             const response = await request.get("/productsByCategory/Dodientu")
             expect(response.status).toEqual(200);
         });
-    });
 });

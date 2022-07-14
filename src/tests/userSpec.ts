@@ -28,33 +28,15 @@ describe("UserModel", () => {
             userId = JSON.parse(JSON.stringify(jwt.decode(response.body))).user.id;
       });
 
-    it("method index have to defined", () => {
-        expect(store.index).toBeDefined();
-    });
-
-    it("method show have to defined", () => {
-        expect(store.show).toBeDefined();
-    });
-
-    it("method create have to defined", () => {
-        expect(store.create).toBeDefined();
-    });
-
-    it("method update have to defined", () => {
-        expect(store.update).toBeDefined();
-    });
-
-    it("method delete have to defined", () => {
-        expect(store.delete).toBeDefined();
-    });
-
-    it("method authenticate have to defined", () => {
-        expect(store.authenticate).toBeDefined();
-    });
-
-    describe("UserStore", () => {
-
         it("test get all users", async () => {
+            const user: User = {
+                username: "levantien",
+                password: PASSWORD_TEST as string,
+            }
+            await request.post("/users")
+            .send(user)
+            .set("Accept", "application/json");
+
             const response = await request.get("/users")
             .set("Authorization", token);
             expect(response.status).toEqual(200);
@@ -106,5 +88,4 @@ describe("UserModel", () => {
             .set("Accept", "application/json");
             expect(response.status).toEqual(200);
         });
-    });
 });

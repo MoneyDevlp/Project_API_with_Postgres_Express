@@ -85,35 +85,6 @@ describe("OrderModel", () => {
             .set("Authorization", token)
         });
 
-    it("method index have to defined", () => {
-        expect(store.index).toBeDefined();
-    });
-
-    it("method show have to defined", () => {
-        expect(store.show).toBeDefined();
-    });
-
-    it("method create have to defined", () => {
-        expect(store.create).toBeDefined();
-    });
-
-    it("method update have to defined", () => {
-        expect(store.update).toBeDefined();
-    });
-
-    it("method delete have to defined", () => {
-        expect(store.delete).toBeDefined();
-    });
-
-    it("method getAllOrderProduct have to defined", () => {
-        expect(store.indexOrderProduct).toBeDefined();
-    });
-
-    it("method orderProduct have to defined", () => {
-        expect(store.addOrderProduct).toBeDefined();
-    });
-
-    describe("OrderStore", () => {
         it("test end point create a new order", async () => {
             const order: Order = {
                 address: "Huế",
@@ -140,6 +111,14 @@ describe("OrderModel", () => {
         });
 
         it("test get all orders", async () => {
+            const order: Order = {
+                address: "Hã Tĩnh",
+                user_id: String(3),
+            }
+            await request.post("/orders")
+            .send(order)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
             const response = await request.get("/orders")
             .set("Authorization", token)
             expect(response.status).toEqual(200);
@@ -170,5 +149,4 @@ describe("OrderModel", () => {
             .set("Authorization", token)
             expect(response.status).toEqual(200);
         });
-    });
 });

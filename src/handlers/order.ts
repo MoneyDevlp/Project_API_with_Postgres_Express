@@ -94,12 +94,12 @@ const orderProducts = async (req: Request, res: Response): Promise<void> => {
 }
 
 const orderRouter = (app: express.Application) => {
-    app.get("/orders", index);
-    app.get("/order/:id", show);
+    app.get("/orders", verifyAuthToken, index);
+    app.get("/order/:id", verifyAuthToken, show);
     app.post("/orders", verifyAuthToken, create);
     app.put("/orders/:id", verifyAuthToken, update);
     app.delete("/orders/:id", verifyAuthToken, deleteOrder);
-    app.get("/orderProducts", getAllOrderProduct);
+    app.get("/orderProducts",verifyAuthToken, getAllOrderProduct);
     app.post("/orders/:id/products", verifyAuthToken,orderProducts);
 }
 

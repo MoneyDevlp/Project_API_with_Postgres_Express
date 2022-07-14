@@ -156,11 +156,13 @@ describe("OrderModel", () => {
 
         it("test get all orders", async () => {
             const response = await request.get("/orders")
+            .set("Authorization", token)
             expect(response.status).toEqual(200);
         });
 
         it("test get order by id", async () => {
             const response = await request.get("/order/1")
+            .set("Authorization", token)
             expect(response.status).toEqual(200);
         });
 

@@ -56,22 +56,12 @@ const update = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-const deleteProduct = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const product = await store.delete(parseInt(req.params.id));
-        res.json(product);
-    } catch (error) {
-        res.status(400);
-        res.json(error);
-    }
-}
 
 const productRouter = (app: express.Application): void => {
     app.get("/products", index);
     app.get("/product/:id", show);
     app.post("/products", verifyAuthToken, create);
     app.put("/products/:id", verifyAuthToken, update);
-    app.delete("/products/:id", verifyAuthToken, deleteProduct);
 }
 
 export default productRouter;

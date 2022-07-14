@@ -57,25 +57,6 @@ const update = async(req: Request, res: Response): Promise<void> => {
     }
 }
 
-const deleteOrder = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const order = await store.delete(parseInt(req.params.id));
-        res.json(order)
-    } catch (error) {
-        res.status(400);
-        res.json(error);
-    }
-}
-
-const getAllOrderProduct = async(_req: Request, res: Response): Promise<void> => {
-    try {
-        const orderProduct = await store.indexOrderProduct();
-        res.json(orderProduct);
-    } catch (error) {
-        res.status(400);
-        res.json(error);
-    }
-}
 
 const orderProducts = async (req: Request, res: Response): Promise<void> => {
     const orderProduct: OrderProduct = {
@@ -98,8 +79,6 @@ const orderRouter = (app: express.Application) => {
     app.get("/order/:id", verifyAuthToken, show);
     app.post("/orders", verifyAuthToken, create);
     app.put("/orders/:id", verifyAuthToken, update);
-    app.delete("/orders/:id", verifyAuthToken, deleteOrder);
-    app.get("/orderProducts",verifyAuthToken, getAllOrderProduct);
     app.post("/orders/:id/products", verifyAuthToken,orderProducts);
 }
 

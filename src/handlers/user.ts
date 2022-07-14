@@ -79,35 +79,12 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-const authenticate = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const authen = await store.authenticate(
-            req.body.username,
-            req.body.password
-        );
-
-        if(authen !== null) {
-            const token = jwt.sign(
-                {
-                    user: authen
-                },
-                process.env.TOKEN_SECRET as jwt.Secret
-            );
-            res.json(token);
-        }
-    } catch (error) {
-        res.status(400);
-        res.json(error);
-    }
-}
-
 const userRouter = (app: express.Application): void => {
     app.get("/users", verifyAuthToken, index);
     app.get("/user/:id", verifyAuthToken, show);
     app.post("/users", create);
     app.put("/users/:id", verifyUserId, update);
     app.delete("/users/:id", verifyUserId, deleteUser);
-    app.post("/user/authenticate",authenticate);
 }
 
 export default userRouter;

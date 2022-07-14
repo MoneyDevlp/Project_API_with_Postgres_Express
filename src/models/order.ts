@@ -69,32 +69,6 @@ export class OrderStore {
         }
     }
 
-    async delete(id: number): Promise<Order> {
-        try {
-            const connect = await client.connect();
-            const sql = "DELETE FROM orders WHERE id = ($1)";
-            const result = await connect.query(sql, [id]);
-
-            const order = result.rows[0];
-            connect.release();
-            return order;
-        } catch (error) {
-            throw new Error(`Don't delete order ${id}, error: ${error}`);
-        }
-    }
-
-    async indexOrderProduct(): Promise<OrderProduct[]> {
-        try {
-            const connect = await client.connect();
-            const sql = "SELECT * FROM order_products";
-            const result = await connect.query(sql);
-
-            connect.release();
-            return result.rows;
-        } catch (error) {
-            throw new Error(`Don't get orderProduct, error: ${error}`);
-        }
-    }
 
     async addOrderProduct(p: OrderProduct): Promise<Order> {
         try {

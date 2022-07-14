@@ -77,15 +77,38 @@ describe("UserModel", () => {
             expect(response.status).toEqual(200);
         });
 
-        it("test authenticate user", async () => {
+        it("test method index", async () => {
+            const response = await store.index();
+            expect(response.length).toBeGreaterThanOrEqual(1);
+        });
+
+        it("test method show", async () => {
+            const response = await store.show(2);
+            expect(response.username).toEqual("levantien");
+        });
+
+        it("test method create", async () => {
             const user: User = {
                 username: "levantien",
                 password: PASSWORD_TEST as string,
             }
-            const response = await request.post("/user/authenticate")
-            .set("Authorization", token)
-            .send(user)
-            .set("Accept", "application/json");
-            expect(response.status).toEqual(200);
+            const response = await store.create(user);
+            expect(response).toBeDefined;
         });
+
+        it("test method update", async () => {
+            const user: User = {
+                id: 2,
+                username: "levantien",
+                password: PASSWORD_TEST as string,
+            }
+            const response = await store.update(user);
+            expect(response).toBeDefined;
+        });
+
+        it("test method delete", async () => {
+            const response = await store.delete(3);
+            expect(response).toBeDefined;
+        });
+
 });

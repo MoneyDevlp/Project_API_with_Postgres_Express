@@ -29,7 +29,7 @@ describe("OrderModel", () => {
 
     const order: Order = {
         address: "Điện Bàn",
-        user_id: String(3),
+        user_id: String(4),
     }
 
     beforeAll(async () => {
@@ -53,6 +53,14 @@ describe("OrderModel", () => {
         await request.post("/users")
             .send(user)
             .set("Accept", "application/json");
+
+        await request.post("/users")
+        .send(user)
+        .set("Accept", "application/json");   
+        
+        await request.post("/users")
+        .send(user)
+         .set("Accept", "application/json");
     
         await request.post("/products")
             .send(product)
@@ -62,24 +70,27 @@ describe("OrderModel", () => {
             .send(product)
             .set("Authorization", token);
 
-        await request.post("/orders")
-            .send({
-                address: "Quảng Nam",
-                user_id: 3,
-            })
-
-        await request.post("/orders")
-            .send({
-                address: "Quảng Bình",
-                user_id: 3,
-            })
-
-        await request.post("/orders")
+            await request.post("/orders")
             .send(order)
             .set("Accept", "application/json")
             .set("Authorization", token)
 
-        await request.post("/orders")
+            await request.post("/orders")
+            .send(order)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
+
+            await request.post("/orders")
+            .send(order)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
+
+            await request.post("/orders")
+            .send(order)
+            .set("Accept", "application/json")
+            .set("Authorization", token)
+
+            await request.post("/orders")
             .send(order)
             .set("Accept", "application/json")
             .set("Authorization", token)
@@ -88,7 +99,7 @@ describe("OrderModel", () => {
         it("test end point create a new order", async () => {
             const order: Order = {
                 address: "Huế",
-                user_id: String(3),
+                user_id: String(4),
             }
             const response = await request.post("/orders")
             .send(order)
@@ -101,7 +112,7 @@ describe("OrderModel", () => {
             const order: Order = {
                 status: "active",
                 address: "Đà Nẵng",
-                user_id: String(3),
+                user_id: String(5),
             }
             const response = await request.put("/orders/1")
             .send(order)
@@ -130,13 +141,6 @@ describe("OrderModel", () => {
             expect(response.status).toEqual(200);
         });
 
-        it("test delete order by id", async () => {
-            const response = await request.delete("/orders/1")
-            .set("Accept", "application/json")
-            .set("Authorization", token)
-            expect(response.status).toEqual(200);
-        });
-
         it("test end point create a new order product", async () => {
             const orderProduct: OrderProduct = {
                 quantity: 50,
@@ -148,5 +152,46 @@ describe("OrderModel", () => {
             .set("Accept", "application/json")
             .set("Authorization", token)
             expect(response.status).toEqual(200);
+        });
+
+        it("test method index", async () => {
+            const response = await store.index();
+            expect(response).toBeDefined();
+        });
+
+        it("test method show", async () => {
+            const response = await store.show(2);
+            expect(response).toBeDefined();
+        });
+
+        it("test method create", async () => {
+            const order: Order = {
+                status: "active",
+                address: "Đà Nẵng",
+                user_id: String(4),
+            }
+            const response = await store.create(order);
+            expect(response).toBeDefined();
+        });
+
+        it("test method update", async () => {
+            const order: Order = {
+                id: 2,
+                status: "active",
+                address: "Đà Nẵng",
+                user_id: String(4),
+            }
+            const response = await store.update(order);
+            expect(response).toBeDefined();
+        });
+
+        it("test method addOrderProduct", async () => {
+            const orderProduct: OrderProduct = {
+                quantity: 50,
+                order_id: String(3),
+                product_id: String(2),
+            }
+            const response = await store.addOrderProduct(orderProduct);
+            expect(response).toBeDefined();
         });
 });

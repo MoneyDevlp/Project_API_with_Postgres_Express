@@ -83,22 +83,5 @@ export class UserStore {
         }
     }
 
-    async authenticate(username: string, password: string): Promise<User | null> {
-        try {
-            const connect = await client.connect();
-            const sql = "SELECT password FROM users WHERE username = ($1)";
-            const result = await connect.query(sql, [username]);
-
-            if(result.rows.length) {
-                const user = result.rows[0];
-                if(bcrypt.compareSync(password + PEPPER, user.password)) {
-                    return user;
-                }   
-            }
-            return null;
-        } catch (error) {
-            throw new Error(`Don't authenticate user ${username} + " " + ${username}, error ${error}`);
-        }
-    }
 }
 
